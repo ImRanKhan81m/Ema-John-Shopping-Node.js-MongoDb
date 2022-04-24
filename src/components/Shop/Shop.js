@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { addToDb, getStoredCart } from '../../utilities/fakedb';
+import useCart from '../../hooks/useCart';
+import { addToDb} from '../../utilities/fakedb';
 import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
 import './Shop.css'
 
 const Shop = () => {
-    const [cart, setCart] = useState([]);
-    const [pageCount, setPageCount]= useState(0);
-    const [page, setPage]= useState(0);
-    const [size, setSize]=useState(10);
+    const [cart, setCart] = useCart();
+    const [pageCount, setPageCount] = useState(0);
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10);
     const [products, setProducts] = useState([]);
 
-    useEffect(() => {
+    useEffect( () =>{
         fetch(`http://localhost:5000/product?page=${page}&size=${size}`)
-            .then(res => res.json())
-            .then(data => setProducts(data));
+        .then(res => res.json())
+        .then(data => setProducts(data));
     }, [page, size]);
 
-
-    useEffect(()=>{
+    useEffect( () =>{
         fetch('http://localhost:5000/productCount')
         .then(res => res.json())
         .then(data =>{
@@ -27,24 +27,12 @@ const Shop = () => {
             const pages = Math.ceil(count/10);
             setPageCount(pages);
         })
-    },[])
+    }, [])
 
 
 
 
-    useEffect(() => {
-        const storedCart = getStoredCart();
-        const saveCart = [];
-        for (const id in storedCart) {
-            const addedProduct = products.find(product => product._id === id);
-            if (addedProduct) {
-                const quantity = storedCart[id];
-                addedProduct.quantity = quantity;
-                saveCart.push(addedProduct);
-            }
-        }
-        setCart(saveCart);
-    }, [products]);
+    
 
 
 
@@ -84,12 +72,12 @@ const Shop = () => {
                             number=> <button
                             className={page === number ? 'selected': ''}
                             onClick={()=> setPage(number)}
-                            >{number }</button>
+                            >{number + 1}</button>
                             )
                     }
                     <select className='option' onChange={e=> setSize(e.target.value)}>
                         <option value="5">5</option>
-                        <option value="10" selected>10</option>
+                        <option value="10" selected >10</option>
                         <option value="15">15</option>
                         <option value="20">20</option>
                     </select>
