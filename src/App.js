@@ -10,6 +10,7 @@ import RequireAuth from './components/RequireAuth/RequireAuth';
 import Shipment from './components/Shipment/Shipment';
 import Shop from './components/Shop/Shop';
 import SignUp from './components/SignUp/SignUp';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
