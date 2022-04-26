@@ -14,13 +14,13 @@ const Shop = () => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        fetch(`https://shielded-bastion-34346.herokuapp.com/product?page=${page}&size=${size}`)
+        fetch(`http://localhost:5000/product?page=${page}&size=${size}`)
             .then(res => res.json())
             .then(data => setProducts(data));
     }, [page, size]);
 
     useEffect(() => {
-        fetch('https://shielded-bastion-34346.herokuapp.com/productCount')
+        fetch('http://localhost:5000/productCount')
             .then(res => res.json())
             .then(data => {
                 const count = data.count;
@@ -60,21 +60,23 @@ const Shop = () => {
                         ></Product>)
                     }
                 </div>
-                <div className='pagination'>
-                    {
-                        [...Array(pageCount).keys()].map(
-                            number => <button
-                                className={page === number ? 'selected' : ''}
-                                onClick={() => setPage(number)}
-                            >{number + 1}</button>
-                        )
-                    }
-                    <select className='option' onChange={e => setSize(e.target.value)}>
-                        <option value="5">5</option>
-                        <option value="10" selected >10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                    </select>
+                <div className='pagination mx-auto'>
+                    <div >
+                        {
+                            [...Array(pageCount).keys()].map(
+                                number => <button
+                                    className={page === number ? 'selected' : ''}
+                                    onClick={() => setPage(number)}
+                                >{number + 1}</button>
+                            )
+                        }
+                        <select className='option' onChange={e => setSize(e.target.value)}>
+                            <option value="5">5</option>
+                            <option value="10" selected >10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div className="cart-container">
