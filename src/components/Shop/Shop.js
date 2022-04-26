@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
-import { addToDb} from '../../utilities/fakedb';
+import { addToDb } from '../../utilities/fakedb';
 import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
 import './Shop.css'
@@ -13,27 +13,21 @@ const Shop = () => {
     const [size, setSize] = useState(10);
     const [products, setProducts] = useState([]);
 
-    useEffect( () =>{
-        fetch(`http://localhost:5000/product?page=${page}&size=${size}`)
-        .then(res => res.json())
-        .then(data => setProducts(data));
+    useEffect(() => {
+        fetch(`https://shielded-bastion-34346.herokuapp.com/product?page=${page}&size=${size}`)
+            .then(res => res.json())
+            .then(data => setProducts(data));
     }, [page, size]);
 
-    useEffect( () =>{
-        fetch('http://localhost:5000/productCount')
-        .then(res => res.json())
-        .then(data =>{
-            const count = data.count;
-            const pages = Math.ceil(count/10);
-            setPageCount(pages);
-        })
-    }, [])
-
-
-
-
-    
-
+    useEffect(() => {
+        fetch('https://shielded-bastion-34346.herokuapp.com/productCount')
+            .then(res => res.json())
+            .then(data => {
+                const count = data.count;
+                const pages = Math.ceil(count / 10);
+                setPageCount(pages);
+            })
+    }, []);
 
 
     const handleAddToCart = (selectedProduct) => {
@@ -58,24 +52,24 @@ const Shop = () => {
         <div className='shop-container'>
             <div>
                 <div className="products-container">
-                {
-                    products.map(product => <Product
-                        key={product._id}
-                        product={product}
-                        handleAddToCart={handleAddToCart}
-                    ></Product>)
-                }
+                    {
+                        products.map(product => <Product
+                            key={product._id}
+                            product={product}
+                            handleAddToCart={handleAddToCart}
+                        ></Product>)
+                    }
                 </div>
                 <div className='pagination'>
                     {
                         [...Array(pageCount).keys()].map(
-                            number=> <button
-                            className={page === number ? 'selected': ''}
-                            onClick={()=> setPage(number)}
+                            number => <button
+                                className={page === number ? 'selected' : ''}
+                                onClick={() => setPage(number)}
                             >{number + 1}</button>
-                            )
+                        )
                     }
-                    <select className='option' onChange={e=> setSize(e.target.value)}>
+                    <select className='option' onChange={e => setSize(e.target.value)}>
                         <option value="5">5</option>
                         <option value="10" selected >10</option>
                         <option value="15">15</option>
